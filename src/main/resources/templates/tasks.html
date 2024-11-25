@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Task List</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar}" th:with="activePage='tasks'"></div>
+<div class="container mt-5">
+    <h1 class="mb-4">Task List</h1>
+
+    <div class="mb-4">
+        <form th:action="@{/tasks/add}" th:object="${newTask}" method="post">
+            <div class="form-group">
+                <label for="taskName">New Task</label>
+                <input type="text" id="taskName" th:field="*{taskName}" class="form-control" placeholder="Enter task name" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Add Task</button>
+        </form>
+    </div>
+
+    <table class="table table-striped">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col">Task Name</th>
+            <th scope="col">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="task : ${tasks}">
+            <td th:text="${task.taskName}"></td>
+            <td>
+                <form th:action="@{/tasks/finish}" method="post" th:object="${task}">
+                    <input type="hidden" name="id" th:value="${task.id}" />
+                    <button type="submit" class="btn btn-success btn-sm">Complete</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
